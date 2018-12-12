@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>这是一个一言演示页面</title>
+
+<meta charset="UTF-8">
+
+<style type="text/css">
+
+body {
+
+background-color:rgb(1,128,127);
+
+}
+
+h1 h2{padding:5px 0 5px 5px;border-left:20px soild bule;}
+
+	#iciba {text-align: center;	font-size: 28px;
+
+	}
+
+	#dujitang{	text-align: center;
+
+	font-size: 32px;}
+
+	#footer{text-align: center;
+
+	font-size: 56px;}
+
+	.print {
+
+    width: 100%;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    -webkit-animation: dy 4s steps(150, end) infinite;
+
+    animation: dy 6s steps(150, end) infinite;
+
+}
+
+@-webkit-keyframes dy {
+
+    from {
+
+        width: 0;
+
+    }
+
+}
+
+@keyframes dy {
+
+    from {
+
+        width: 0;
+
+    }
+
+}
+
+	#h1 {	text-align: center;font-size: 72px;color: #76FF03;	}
+
+	h2 {	text-align: center;font-size: 56px;	color: #76Fgey;	}
+
+</style>
+
+</head>
+
+<body>
+
+<h1 id="h1">一言演示</h1>
+
+<h2>金山词霸每日一句</h2>
+
+<script type="text/javascript" src="https://api.gxusb.com/yiyan/iciba/index.php/?encode=js&charset=utf-8"></script>
+
+<div class="print" id="iciba"><script>iciba()</script></div>
+
+<script type="text/javascript" src="https://api.gxusb.com/yiyan/iciba/pv.php/?encode=js&charset=utf-8"></script>
+
+<div id="pv">当前被调用<script>pv()</script>次</div>
+
+<h2>毒鸡汤</h2>
+
+<script type="text/javascript" src="https://api.gxusb.com/yiyan/dujitang/index.php/?encode=js&charset=utf-8"></script>
+
+<div id="dujitang"><script>dujitang()</script></div>
+
+<script type="text/javascript" src="https://api.gxusb.com/yiyan/dujitang/pv.php/?encode=js&charset=utf-8"></script>
+
+<div id="pv">当前被调用<script>pv()</script>次</div>
+
+<footer id="footer">
+
+<a href="https://gxusb.com/api-yiyan.html">使用方法</a>
+
+</footer>
+
+</body>
+
+</html>
