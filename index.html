@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>时间戳转换工具</title>
+	</head>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		.tool{
+			padding: 10px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			width: 768px;
+			margin: 50px auto;
+			border: 1px solid gainsboro;
+			border-radius: 5px;
+			box-shadow: 5px 5px 5px gainsboro;
+			background-color: #fafafa;
+		}
+		@media (max-width:960px) {
+			
+		}
+		input{
+			width: 170px;
+			height: 30px;
+			padding: 0 4px;
+			font-size: 17px;
+			box-sizing: border-box;
+		}
+		select{
+			width: 80px;
+			height: 29px;
+			font-size: 14px;
+		}
+		.tool>div{
+			margin: 10px 0;
+		}
+		.tool>div:nth-child(2)>span:nth-of-type(n+2){
+			display: inline-block;
+			border: 1px solid #A9A9A9;
+			width: 170px;
+			box-sizing: border-box;
+			padding: 0 4px;
+			height: 30px;
+			line-height: 30px;
+		}
+		.tool>div>span:nth-child(1){
+			display: inline-block;
+			width: 60px;
+			font-size: 16px;
+		}
+		.copy_btn{
+			width: 70px;
+			margin-left: 5px;
+			margin-right: 50px;
+			height: 30px;
+		}
+		.change_btn{
+			width: 40px;
+			height: 30px;
+		}
+		.tool>.title{
+			font-size: 20px;
+			font-weight: 700;
+			line-height: 30px;
+			margin-bottom: 20px;
+			color: #333;
+		}
+	</style>
+	<body>
+		<div id="app">
+			<div class="tool">
+				<div class="title">时间戳转换工具</div>
+				<div>
+					<span>现在</span>
+					<span v-text="timestamp"></span>
+					<button class="copy_btn" v-on:click="copy([[timestamp]],$event)">复制</button>
+					<span v-text="nowTime"></span>
+					<button type="button" class="copy_btn" v-on:click="copy([[nowTime]],$event)">复制</button>
+				</div>
+				<div>
+					<span>时间戳</span>
+					<input type="text" v-model="in_timestamp" />
+					<select v-model="timestamp_ms_s">
+						<option value="ms">毫秒(ms)</option>
+						<option value="s">秒(s)</option>
+					</select>
+					<button type="button" class="change_btn" v-on:click="int_time">转换</button>
+					<input type="text" v-bind:value="time_result">
+					<button type="button" class="copy_btn" v-on:click="copy([[time_result]],$event)">复制</button>
+				</div>
+				<div>
+					<span>时间</span>
+					<input type="text" v-model="in_time" />
+					<select v-model="time_ms_s">
+						<option value="ms">毫秒(ms)</option>
+						<option value="s">秒(s)</option>
+					</select>
+					<button type="button" class="change_btn" v-on:click="time_int">转换</button>
+					<input type="text" v-bind:value="timestamp_result">
+					<button type="button" class="copy_btn" v-on:click="copy([[timestamp_result]],$event)">复制</button>
+				</div>
+			</div>
+		</div><!-- 
+		<script src="./vue.min.js" type="text/javascript" charset="utf-8"></script> -->
+		<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.9/vue.min.js"></script>
+		<script type="text/javascript">
+			var vm = new Vue({
+				delimiters: ['[[', ']]'],
+				el: '#app',
+				data: {
+					nowTime: '-',
+					timestamp: '-',
+
+					in_timestamp: '',
+					timestamp_ms_s: 'ms',
+					time_result: '',
+
+					time_ms_s: 'ms',
+					in_time: '',
+					timestamp_result: ''
+				},
+				mounted: function() {
+					this.timer = setInterval(() => {
+						this.setNowTime()
+					}, 1000);
+					let t = new Date();
+					this.in_timestamp = t.getTime();
+					this.in_time = this.format(t.getTime())
+				},
+				methods: {
+					setNowTime: function() {
+						let myDate = new Date()
+						let t = myDate.getTime()
+						this.timestamp = t
+						this.nowTime = this.format(t)
+					},
+					format: function(time) {
+						time = parseInt(time)
+						let t = new Date(time)
+						let month = t.getMonth() + 1;
+						let day = t.getDate();
+						let h = t.getHours();
+						let m = t.getMinutes();
+						let s = t.getSeconds();
+						month = month < 10 ? '0' + month : month;
+						day = day < 10 ? '0' + day : day;
+						h = h < 10 ? '0' + h : h;
+						m = m < 10 ? '0' + m : m;
+						s = s < 10 ? '0' + s : s;
+						return t.getFullYear() + '-' + month + '-' + day + ' ' + h + ':' + m + ':' + s
+					},
+					int_time: function() {
+						console.log(this.in_timestamp)
+						this.time_result = this.timestamp_ms_s == 'ms'?this.format(this.in_timestamp):this.format(this.in_timestamp + '000')
+					},
+					time_int: function() {
+						let t = new Date(this.in_time)
+						this.timestamp_result = this.time_ms_s == 'ms'?t.getTime():t.getTime() / 1000
+					},
+					copy:function(val,evt){
+					   let input = document.createElement("input");
+					   input.value = val;
+					   document.body.appendChild(input);
+					   input.select();
+					   document.execCommand("Copy");
+					   document.body.removeChild(input);
+					   this.btn_text(evt.currentTarget)
+					},
+					btn_text:function(evt){
+						evt.innerText = '复制成功';
+						setTimeout(function(){
+							evt.innerText = '复制'
+						},1000)
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
